@@ -1,0 +1,122 @@
+def binarySearch(array,beginPointer,endPointer,value):
+    if beginPointer>endPointer:
+        return beginPointer
+    midPointer=(beginPointer+endPointer)//2   
+    if value==array[midPointer]:
+        return midPointer 
+    elif value>array[midPointer]:
+        return binarySearch(array,midPointer+1,endPointer,value)
+    else:
+        return binarySearch(array,beginPointer,midPointer-1,value)
+    
+def findKthElement_2(array1,array2,k):
+    # print(array1,array2,k)
+    midArray1=len(array1)//2
+    midArray2=len(array2)//2
+    smallerArray=[]
+    largerArray=[]
+    if array1[midArray1]<array2[midArray2]:
+        smallerArray=array1
+        largerArray=array2
+    else:
+        smallerArray=array2
+        largerArray=array1
+    smallerArrayMid=len(smallerArray)//2
+    largerArrayMid=len(largerArray)//2
+    smallerArrayIndex=binarySearch(smallerArray,smallerArrayMid+1,len(smallerArray)-1,largerArray[largerArrayMid])
+    checkIndex=smallerArrayIndex+largerArrayMid
+    if k==checkIndex:
+        return largerArray[largerArrayMid]
+    elif k<checkIndex:
+        newArray1=smallerArray[0:smallerArrayIndex]
+        newArray2=largerArray[0:largerArrayMid]
+        if len(newArray2)==0:
+            return newArray1[k]
+        else:
+            return findKthElement_2(newArray1,newArray2,k)
+    else:
+        newArray1=smallerArray[smallerArrayIndex+1:]
+        newArray2=largerArray[largerArrayMid+1:]
+        if len(newArray1)==0:
+            return newArray2[k-checkIndex-1]
+        else:
+            return findKthElement_2(newArray1,newArray2,k-checkIndex-1)
+    
+
+def findKthElement(array1,array2,array3,k):
+    # print(array1,array2,array3,k)
+    midArray1=len(array1)//2
+    midArray2=len(array2)//2
+    midArray3=len(array3)//2
+    smallestArray=[]
+    middleArray=[]
+    largestArray=[]
+    if array1[midArray1]<array2[midArray2]:
+        if array2[midArray2]<array3[midArray3]:
+            smallestArray=array1
+            middleArray=array2
+            largestArray=array3
+        else:
+            largestArray=array2
+            if array1[midArray1]<array3[midArray3]:
+                smallestArray=array1
+                middleArray=array3
+    else:
+        if array1[midArray1]<array3[midArray3]:
+            smallestArray=array2
+            middleArray=array1
+            largestArray=array3
+        else:
+            largestArray=array1
+            if array2[midArray2]<array3[midArray3]:
+                smallestArray=array2
+                middleArray=array3
+            else:
+                smallestArray=array3
+                middleArray=array2
+    
+    smallestArrayMid=len(smallestArray)//2
+    middleArrayMid=len(middleArray)//2
+    largestArrayMid=len(largestArray)//2
+    smallestArrayIndex=binarySearch(smallestArray,smallestArrayMid+1,len(smallestArray)-1,middleArray[middleArrayMid])
+    largestArrayMidIndex=binarySearch(largestArray,0,largestArrayMid-1,middleArray[middleArrayMid])
+    checkIndex=smallestArrayIndex+largestArrayMidIndex+middleArrayMid
+    if k==checkIndex:
+        return middleArray[middleArrayMid]
+    elif k<checkIndex:
+        newArray1=smallestArray[0:smallestArrayIndex]
+        newArray2=middleArray[0:middleArrayMid]
+        newArray3=largestArray[0:largestArrayMidIndex]
+        # print(newArray1,newArray2,newArray3,k)
+        if len(newArray3)==0 and len(newArray2)==0:
+            return newArray1[k]
+        elif len(newArray3)==0:
+            return findKthElement_2(newArray1,newArray2,k)
+        elif len(newArray2)==0:
+            return findKthElement_2(newArray1,newArray3,k)
+        else:
+            return findKthElement(newArray1,newArray2,newArray3,k)
+    else:
+        newArray1=smallestArray[smallestArrayIndex:]
+        newArray2=middleArray[middleArrayMid+1:]
+        newArray3=largestArray[largestArrayMidIndex:]
+        # print(newArray1,newArray2,newArray3,k-checkIndex-1)
+        if len(newArray1)==0 and len(newArray2)==0:
+            return newArray3[k-checkIndex-1]
+        elif len(newArray1)==0:
+            return findKthElement_2(newArray2,newArray3,k-checkIndex-1)
+        elif len(newArray2)==0:
+            return findKthElement_2(newArray1,newArray3,k-checkIndex-1)
+        else:
+            return findKthElement(newArray1,newArray2,newArray3,k-checkIndex-1)
+
+
+
+array1=[1,4,7,10,13,16,19]
+array2=[2,5,8,11,14,17,20]
+array3=[3,6,9,12,15,18,21]
+array4=[0,1,2]
+array5=[3,4,5]
+array6=[6,7,8]
+for i in range(8):
+    print(i,findKthElement(array4,array5,array6,i))
