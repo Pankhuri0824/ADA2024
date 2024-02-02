@@ -1,4 +1,7 @@
+import random
+
 def binarySearch(array,beginPointer,endPointer,value):
+    # print(array,beginPointer,endPointer,value)
     if beginPointer>endPointer:
         return beginPointer
     midPointer=(beginPointer+endPointer)//2   
@@ -10,7 +13,6 @@ def binarySearch(array,beginPointer,endPointer,value):
         return binarySearch(array,beginPointer,midPointer-1,value)
     
 def findKthElement_2(array1,array2,k):
-    # print(array1,array2,k)
     midArray1=len(array1)//2
     midArray2=len(array2)//2
     smallerArray=[]
@@ -32,13 +34,17 @@ def findKthElement_2(array1,array2,k):
         newArray2=largerArray[0:largerArrayMid]
         if len(newArray2)==0:
             return newArray1[k]
+        elif len(newArray1)==0:
+            return newArray2[k]
         else:
             return findKthElement_2(newArray1,newArray2,k)
     else:
-        newArray1=smallerArray[smallerArrayIndex+1:]
+        newArray1=smallerArray[smallerArrayIndex:]
         newArray2=largerArray[largerArrayMid+1:]
         if len(newArray1)==0:
             return newArray2[k-checkIndex-1]
+        elif len(newArray2)==0:
+            return newArray1[k-checkIndex-1]
         else:
             return findKthElement_2(newArray1,newArray2,k-checkIndex-1)
     
@@ -61,6 +67,9 @@ def findKthElement(array1,array2,array3,k):
             if array1[midArray1]<array3[midArray3]:
                 smallestArray=array1
                 middleArray=array3
+            else:
+                smallestArray=array3
+                middleArray=array1
     else:
         if array1[midArray1]<array3[midArray3]:
             smallestArray=array2
@@ -112,11 +121,39 @@ def findKthElement(array1,array2,array3,k):
 
 
 
-array1=[1,4,7,10,13,16,19]
-array2=[2,5,8,11,14,17,20]
-array3=[3,6,9,12,15,18,21]
-array4=[0,1,2]
-array5=[3,4,5]
-array6=[6,7,8]
-for i in range(8):
-    print(i,findKthElement(array4,array5,array6,i))
+# array1=[2, 16, 22, 40, 43, 54, 70, 71, 83, 88, 94, 95]
+# array2=[3, 16, 18, 29, 36, 40, 55, 67, 69, 89, 97, 100]
+# array3=[14, 15, 16, 20, 24, 38, 52, 61, 64, 67, 69, 90]
+# array4=[0,1,2]
+# array5=[3,4,5]
+# array6=[6,7,8]
+# print(findKthElement(array1,array2,array3,23))
+
+while True:
+    n=random.randint(1,500)
+    arrayRand1=[]
+    arrayRand2=[]
+    arrayRand3=[]
+    for i in range(3):
+        for j in range(n):
+            if i==0:
+                arrayRand1.append(random.randint(0,1000))
+            elif i==1:
+                arrayRand2.append(random.randint(0,1000))
+            else:
+                arrayRand3.append(random.randint(0,1000))
+    arrayRand1.sort()
+    arrayRand2.sort()
+    arrayRand3.sort()
+    arrayRand4=arrayRand1+arrayRand2+arrayRand3
+    arrayRand4.sort()
+    for i in range(len(arrayRand4)):
+        try:
+            if arrayRand4[i]!=findKthElement(arrayRand1,arrayRand2,arrayRand3,i):
+                print("FUCK")
+                raise
+            else:
+                print(n,"YES")
+        except:
+            print(i,arrayRand1,arrayRand2,arrayRand3,arrayRand4)
+            raise
