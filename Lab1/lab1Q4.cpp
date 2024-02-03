@@ -12,23 +12,11 @@ using namespace std;
 bool recursion(int left,int right,vector<int>& array,int stat){
     //median by max and min (traverse array once)
     if((right==left)){
-        if(array[left]==stat){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-  
-    int mini=INT_MAX;
-    int maxi=INT_MIN;
-    for(int k=left;k<=right;k++){
-        maxi=max(maxi,array[k]);
-        mini=min(mini,array[k]);
+        return (array[left]==stat);
     }
 
     // use median and split array into 2
-    int med=(maxi+mini)/2;
+    int med=(array[left]+array[right])/2;
     int lsum=0;
     int rsum=0;
     int ind=left;
@@ -49,7 +37,26 @@ bool recursion(int left,int right,vector<int>& array,int stat){
         return false;
     }
     else{
-        return recursion(left,ind -1, array, stat) || recursion(ind,right, array, stat);
+        if(stat<=med && lsum>=stat){
+            return recursion(left,ind -1, array, stat);
+        }
+        else if(rsum>=stat){
+            bool check= recursion(ind,right, array, stat);
+            if(check==true){
+                return true;
+            }
+            else{
+                if(lsum>=stat){
+                  return recursion(left,ind -1, array, stat);
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        else{
+            return false;
+        }
     }
 
 }
