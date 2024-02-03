@@ -8,28 +8,25 @@
 #include <climits>
  
 using namespace std;
-
-bool recursion(int left,int right,vector<int>& array,int stat){
-    //median by max and min (traverse array once)
+ 
+bool recursion(long long int left,long long int right,vector<long long int>& array,long long int stat,vector<long long int>& temp){
     if((right==left)){
         return (array[left]==stat);
     }
 
     // use median and split array into 2
-    int med=(array[left]+array[right])/2;
-    int lsum=0;
-    int rsum=0;
-    int ind=left;
-    for(int j=left;j<=right;j++){
-        if(array[j]<=med){
-            lsum+=array[j];
-            ind++;
-        }
-        else{
-            rsum+=array[j];
-        }
+    long long int med=(array[left]+array[right])/2; 
+    //1 2 3 4 5 -> 3 -> 123 , 45-> we need to divide by med ele ind+1 = something just bigger than that which is upper bound
+    auto medd= upper_bound(array.begin() + left, array.begin() + right + 1,med);
+    long long int medit =distance(array.begin(), medd);
+    long long int lsum=0;
+    if (left!=0){
+        lsum=temp[medit-1]-temp[left-1];
     }
-
+    else{ lsum=temp[medit-1];}
+    long long int rsum=temp[right]-temp[medit-1];
+ 
+    
     if(lsum==stat || rsum==stat || rsum+lsum==stat){
         return true;
     }
@@ -38,16 +35,16 @@ bool recursion(int left,int right,vector<int>& array,int stat){
     }
     else{
         if(stat<=med && lsum>=stat){
-            return recursion(left,ind -1, array, stat);
+            return recursion(left,medit -1, array, stat,temp);
         }
         else if(rsum>=stat){
-            bool check= recursion(ind,right, array, stat);
+            bool check= recursion(medit,right, array, stat,temp);
             if(check==true){
                 return true;
             }
             else{
                 if(lsum>=stat){
-                  return recursion(left,ind -1, array, stat);
+                  return recursion(left,medit -1, array, stat,temp);
                 }
                 else{
                     return false;
@@ -58,35 +55,51 @@ bool recursion(int left,int right,vector<int>& array,int stat){
             return false;
         }
     }
-
+ 
 }
  
 int main(){
-    int t;// test cases
+    long long int t;// test cases
     cin>>t;
     for(int test=0;test<t;test++){
-        int n,q;
+        long long int n,q;
         cin>>n>>q; //n=no of pokemons, q=lenth of oak's array
-
-        vector<int> arr(n);//friendliness stat of n pokemons
+ 
+        vector<long long int> arr(n);//friendliness stat of n pokemons
         for(int i=0;i<n;i++){
             cin>>arr[i];
         }
-
+ 
         sort(arr.begin(),arr.end());
-
+ 
+        vector<long long int> add(n);
+        long long int temp=0;
+        for(int i=0;i<n;i++){
+            temp+=arr[i];
+            add[i]=temp;
+        }
+ 
         for(int i=0;i<q;i++){ //q=number of queries
-            int a;
+            long long int a;
             cin>>a;
-            bool ans=recursion(0,n-1, arr, a);
-            if(ans==true){
-                cout<<"Yes"<<endl;
+            if(n==1){
+                if(a==arr[0]){
+                    cout<<"YES"<<endl;
+                }
+                else{
+                    cout<<"NO"<<endl;
+                }
             }
             else{
-                cout<<"No"<<endl;
+                if(recursion(0,n-1, arr, a,add)){
+                cout<<"Yes"<<endl;
+                }
+                else{
+                    cout<<"No"<<endl;
+                }
             }
         }
-
+ 
     }
     return 0;
  
