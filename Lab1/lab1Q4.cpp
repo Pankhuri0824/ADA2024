@@ -45,15 +45,10 @@ bool recursion(int left,int right,vector<int>& array,int stat){
     if(lsum==stat || rsum==stat || rsum+lsum==stat){
         return true;
     }
-     else if(array[left]==array[right]){
+    else if(array[left]==array[right]){
         return false;
     }
     else{
-        // int l1=left;
-        // int r1=ind;
-
-        // int l2=r1+1;
-        // int r2=right;
         return recursion(left,ind -1, array, stat) || recursion(ind,right, array, stat);
     }
 
@@ -70,6 +65,8 @@ int main(){
         for(int i=0;i<n;i++){
             cin>>arr[i];
         }
+
+        sort(arr.begin(),arr.end());
 
         for(int i=0;i<q;i++){ //q=number of queries
             int a;
