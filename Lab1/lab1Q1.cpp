@@ -30,6 +30,9 @@ bool recursion(vector<int> &arr, int index, vector<int> &subarr, int n, int d){
         }
         subarr.pop_back(); 
 
+
+        
+
         if(recursion(arr, index + 1, subarr, n, d)){ //not pick
             return true; 
         }
