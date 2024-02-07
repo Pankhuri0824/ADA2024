@@ -3,4 +3,4 @@ Assignments done for Analysis & Design of ALgorithms 2024 Section B under Profes
 
 Assignments are divided into Theory and Lab Questions. 
 - Lab questions have been done individually 
-- Theory questions have been done with Somay Jalan ( 2022505 )
+- Theory questions have been done with Somay Jalan ( Roll no - 2022505 )
