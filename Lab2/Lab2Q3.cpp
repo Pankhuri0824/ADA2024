@@ -11,32 +11,23 @@ using namespace std;
 //vertice value number must increase as you move forward4
 //only one connected component
 
-int countedges(vector<vector<int>> &graph,int v,int row){
-    int count=0;
-    for(int i=0;i<v;i++){
-        if(graph[row][i]==1){
-            count++;
-        }
-    }
-    return count;
-}
 
 int main(){
     int v,e; //n and m in Q
     cin>>v>>e;
 
     //constructing the adjacency matrix
-    vector<vector<int>> graph(v,vector<int>(v,0));
+    vector<vector<int>> graph(v);
 
     for(int i=0;i<e;i++){
         int a,b;
         cin>>a>>b;
-        graph[a-1][b-1]=1; //at index 0 you have 1 , at 1 you have 2 and so on
-        graph[b-1][a-1]=1;
+        graph[a-1].push_back(b);
+        graph[b-1].push_back(a);
     }
 
-    // for(int i=0;i<v;i++){ //printing adjacency matrix
-    //     for(int j=0;j<v;j++){
+    // for(int i=0;i<graph.size();i++){ //printing adjacency list
+    //     for(int j=0;j<graph[i].size();j++){
     //         cout<<graph[i][j]<<" ";
     //     }
     //     cout<<endl;
@@ -46,19 +37,20 @@ int main(){
 
     for(int i=0;i<v;i++){
         if(i==0){//checking for edge 1
-            dp[i]=1*(countedges(graph,v,i));
+            dp[i]=1*graph[i].size();
         }
 
         else{
             int val=-1;
-            for(int j=0;j<v;j++){
-                if(graph[i][j]==1){ //if smaller edge exists , endpointedges*numberofnodes
-                    int vertices=(dp[j]/countedges(graph,v,j)) + 1; // last beauty/endpointedges = vertcies
-                    val=max(val,( (vertices)*countedges(graph,v,i)) );
+            for(int j=0;j<graph[i].size();j++){ //check all edges of i
+                if(graph[i][j]< (i+1) ){//edge being considered has smaller value than i
+                    int node= graph[i][j]-1;
+                    int vertcies = ( dp[node]/graph[node].size() ) + 1; // last beauty/endpointedges = vertcies
+                    int curr=  (vertcies)*graph[i].size() ; 
+                    val= max(val,curr);
                 }
             }
-            
-            if(val==-1) dp[i]=1*(countedges(graph,v,i));//checking for connected componenets
+            if(val==-1) dp[i]=1*(graph[i].size());//checking for connected componenets
             else dp[i]=val;
             
         }
@@ -68,7 +60,7 @@ int main(){
     for(int i=0;i<v;i++){
         ans=max(ans,dp[i]);
     }
-    cout<<ans<<" ";
+    cout<<ans;
 
 
     return 0;
