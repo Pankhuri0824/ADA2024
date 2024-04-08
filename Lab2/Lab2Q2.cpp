@@ -29,7 +29,7 @@ int main(){
             vector<int> row ;
             row.assign(v[n].begin(), v[n].end());
 
-            for(int i=0;i<10;i++){
+            for(int i=0;i<1024;i++){
                 if(v[n][i]>0){
                     int res = i | num ;
                     row[res]=(row[res] + v[n][i])% 1000000007;
@@ -37,10 +37,7 @@ int main(){
             }
 
             v.push_back(row);
-            for(int i=0;i<16;i++){
-                cout<<v[n+1][i]<<" ";
-            }
-            cout<<endl;
+            
         }
 
         else if(mode==2){
@@ -52,13 +49,3 @@ int main(){
 
     
 }
-
-
-// TC : 
-// 6
-// 2 0
-// 2 1
-// 1 2
-// 1 2
-// 2 2
-// 2 1000
