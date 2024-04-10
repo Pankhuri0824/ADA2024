@@ -1,7 +1,7 @@
 
-Lab 1 Questions :
-- Party Time :**
+Lab 2 Questions :
+- Party Time :*Not done*
 - The teleportation Machine : *Accepted*
 - Artist's Dilemma : *Accepted*
-- The Cooper-Hofstadler Realization : *Can't do*
+- The Cooper-Hofstadler Realization : *Accepted*
 - RIISE ONCE AGAIN : *Accepted*
